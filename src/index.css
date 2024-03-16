@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+  body {
+  background: #040723;
+}
+.list-group li:active {
+  background-color: #5535df;
+  border: 0;
+  color: #fff;
+}
+.icon1:active {
+  color: #fff;
+}
