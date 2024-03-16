@@ -1,57 +1,26 @@
-import React, { useState } from "react";
-// import { useSelector } from "react-redux";
-// import { removeTodo } from "../store/TodoSlice";
-// import { useDispatch } from "react-redux";
+import React from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 import { MdOutlineAdd } from "react-icons/md";
-
+import { useContext } from "react";
+import { MyContext } from "../context/ContextProvider";
 const TOdos = () => {
-  // const todos = useSelector((state) => state.todos);
-  // const dispatch = useDispatch();
-  const [input, setInput] = useState("");
-  const [toggelBtn, setToogleBtn] = useState(true);
-  const [isEditItem, setIsEditItem] = useState(null);
-  const [items, setItems] = useState([]);
-  const addItems = () => {
-    if (!input) {
-      alert("Plzz Enter some task");
-    }else if(input && !toggelBtn){
-      setItems(
-        items.map((elem)=>{
-          if(elem.id === isEditItem){
-            return {...elem, name: input}
-          }
-          return elem;
-        })
-      )
-      setIsEditItem(null);
-      setInput("")
-      setToogleBtn(true)
-    } 
-    else {
-      const allInput = { id: new Date().getTime().toString(), name: input };
-      setItems([...items, allInput]);
-      setInput("");
-    }
-  };
-  const removeItem = (index) => {
-    const updatedItems = items.filter((item) => {
-      return index !== item.id;
-    });
-    setItems(updatedItems);
-  };
-  const removeAll = () => {
-    setItems([]);
-  };
-  const editItem = (id) => {
-    const editItem = items.find((elem) => {
-      return id === elem.id;
-    });
-    setToogleBtn(false);
-    setInput(editItem.name)
-    setIsEditItem(id)
-  };
+const {
+  input,
+  setInput,
+  toggleBtn,
+  items,
+  removeAll,
+  editItem,
+  addItems,
+  removeItem
+ } = useContext(MyContext)
+
+  
+
+  console.log(items,"item");
+  console.log(input,"input");
+  console.log(toggleBtn,"toggle");
   return (
     <>
       <div className="container mt-5 text-light">
@@ -66,14 +35,14 @@ const TOdos = () => {
           >
             <input
               type="text"
-              className="form-control fs-3 ps-4"
+              className="form-control fs-3 ps-4 py-2"
               placeholder="✍️ Add Items..."
               autoFocus
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
 
-            {toggelBtn ? (
+            {toggleBtn ? (
               <MdOutlineAdd
                 className="fs-1 text-success"
                 style={{
@@ -86,11 +55,11 @@ const TOdos = () => {
               />
             ) : (
               <MdModeEdit
-                className="text-success fs-1 me-4"
+                className="text-success fs-2 me-4"
                 style={{
                   position: "absolute",
                   right: "15px",
-                  top: "10px",
+                  top: "15px",
                   background: "#fff",
                 }}
                 onClick={addItems}
@@ -113,7 +82,7 @@ const TOdos = () => {
           className="list-group col-8 offset-2 px-4"
           style={{ overflowY: "auto", height: "400px" }}
         >
-          {items.map((todo) => (
+          {items?.map((todo) => (
             <li
               className="list-group-item fs-3 rounded-3 d-flex mb-2 px-4 pt-2"
               key={todo.id}
